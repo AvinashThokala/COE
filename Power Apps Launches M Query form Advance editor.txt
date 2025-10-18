@@ -1,0 +1,12 @@
+let
+    Source = Cds.Entities(#"CoE Starter Kit Environment URL", [ReorderColumns=null, UseFormattedValue=null]),
+    entities = Source{[Group="entities"]}[Data],
+    admin_auditlogs = entities{[EntitySetName="admin_auditlogs"]}[Data],
+    #"Removed Other Columns" = Table.SelectColumns(admin_auditlogs,{"admin_appid", "admin_auditlogid", "admin_creationtime", "admin_userupn"}),
+    #"Renamed Columns" = Table.RenameColumns(#"Removed Other Columns",{{"admin_appid", "App ID"}, {"admin_auditlogid", "Session ID"}, {"admin_creationtime", "Launched on"}, {"admin_userupn", "Launched by"}}),
+    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"Launched on", type datetime}}),
+    #"Added Custom Column" = Table.AddColumn(#"Changed Type", "Launched on (Month)", each if ([Launched on] <> null) then #date(Date.Year([Launched on]), Date.Month([Launched on]), 1) else null, type date),
+    #"Merged Queries" = Table.NestedJoin(#"Added Custom Column", {"App ID"}, #"Power Apps", {"App ID"}, "Power Apps", JoinKind.LeftOuter),
+    #"Expanded Power Apps" = Table.ExpandTableColumn(#"Merged Queries", "Power Apps", {"App Name", "App Owner", "App Owner ID", "Deleted", "Environment ID", "Environment Name", "Is Orphan", "NonProdNameCheck"}, {"App Name", "App Owner", "App Owner ID", "Deleted", "Environment ID", "Environment Name", "Is Orphan", "NonProdNameCheck"})
+in
+    #"Expanded Power Apps"

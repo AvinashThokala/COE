@@ -1,0 +1,9 @@
+let
+    Source = Cds.Entities(#"CoE Starter Kit Environment URL", [ReorderColumns=null, UseFormattedValue=null]),
+    entities = Source{[Group="entities"]}[Data],
+    admin_auditlogs = entities{[EntitySetName="admin_auditlogs"]}[Data],
+    #"Removed Other Columns" = Table.SelectColumns(admin_auditlogs,{"admin_appid", "admin_auditlogid", "admin_creationtime", "admin_operation", "admin_userid", "admin_userupn"}),
+    #"Renamed Columns" = Table.RenameColumns(#"Removed Other Columns",{{"admin_appid", "App ID"}, {"admin_auditlogid", "Session ID"}, {"admin_creationtime", "Launched on"}, {"admin_userupn", "Launched by"}, {"admin_operation", "Operation"}, {"admin_userid","App Owner ID"}}),
+    #"Added Custom Column" = Table.AddColumn(#"Renamed Columns", "Launched on (Month)", each Text.Combine({DateTimeZone.ToText([Launched on], "MMM"), " ", DateTimeZone.ToText([Launched on], "yyyy")}), type text)
+in
+    #"Added Custom Column"

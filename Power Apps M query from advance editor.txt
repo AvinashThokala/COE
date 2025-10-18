@@ -1,0 +1,48 @@
+let
+    Source = Cds.Entities(#"CoE Starter Kit Environment URL", [ReorderColumns=null, UseFormattedValue=null]),
+    entities = Source{[Group="entities"]}[Data],
+    admin_apps = entities{[EntitySetName="admin_apps"]}[Data],
+    #"Removed Other Columns" = Table.SelectColumns(admin_apps,{"admin_sharepointformurl", "admin_powerappstype", "admin_powerappstype_display", "admin_displayname", "admin_appstate", "admin_appsharedwithtenant", "admin_appsharedusers", "admin_appsharedgroups", "admin_appsharedguestuser", "admin_appsharedguesteditor", "admin_appsharedguestowner", "admin_apppublished", "admin_appplanclassification", "admin_appownerdisplayname", "admin_appowner", "admin_appmodifiedon", "admin_appid", "admin_appenvironmentid", "admin_appenvironmentdisplayname", "admin_appdeletedon", "admin_appdeleted", "admin_appcreatedon", "admin_dlpevaluationstatus", "cr5d5_appisorphaned", "admin_applogicalname", "admin_appidstring", "admin_appalmmode"}),
+    #"Invoked Custom Function" = Table.AddColumn(#"Removed Other Columns", "admin_nonprodappnamecheck", each NonProdNameCheck([admin_displayname])),
+    #"Added Custom" = Table.AddColumn(#"Invoked Custom Function", "admin_notmodifiedsincecreated", each if [admin_appcreatedon] <> null and ([admin_appmodifiedon] = null 
+or 
+Duration.TotalMinutes([admin_appmodifiedon]-[admin_appcreatedon])<2) 
+then 1 
+else 0),
+    #"Renamed Columns" = Table.RenameColumns(#"Added Custom",{{"admin_sharepointformurl", "SharePoint Form URL"}, {"admin_powerappstype_display", "App Type"}, {"admin_displayname", "App Name"}, {"admin_appstate", "State"}, {"admin_appsharedwithtenant", "Shared with tenant"}, {"admin_appsharedusers", "Shared users"}, {"admin_appsharedgroups", "Shared groups"}, {"admin_appsharedguestuser","Guest users"},{"admin_appsharedguesteditor","Guest editors"},{"admin_appsharedguestowner","Guest owners"},{"admin_apppublished", "Published on"}, {"admin_appplanclassification", "App plan classification"}, {"admin_appownerdisplayname", "App Owner"}, {"admin_appowner", "App Owner ID"}, {"admin_appmodifiedon", "Last Modified On"}, {"admin_appid", "App ID"}, {"admin_appenvironmentid", "Environment ID"}, {"admin_appenvironmentdisplayname", "Environment Name"}, {"admin_appdeletedon", "Deleted On"}, {"admin_appdeleted", "Deleted"}, {"admin_appcreatedon", "Created On"}, {"admin_dlpevaluationstatus", "DLP Evaluation status"}, {"admin_nonprodappnamecheck", "Non Prod Name Check"}, {"admin_notmodifiedsincecreated", "Not Modified Since Created Check"}, {"admin_powerappstype", "App Type (Internal)"}, {"cr5d5_appisorphaned" , "Is Orphan"}, {"admin_appalmmode","ALM Mode"}}),
+    #"Added Created on (Month)" = Table.AddColumn(#"Renamed Columns", "Created on (Month)", each if ([Created On] <> null) then #date(Date.Year([Created On]), Date.Month([Created On]), 1) else null, type date),
+    #"Replaced Value" = Table.ReplaceValue(#"Added Created on (Month)",null,"Premium",Replacer.ReplaceValue,{"App plan classification"}),
+    #"Added Is Orphan Score" = Table.AddColumn(#"Replaced Value", "Is Orphan Score", each if [Is Orphan] = "No" then 0 else 1),
+    #"Added State Score" = Table.AddColumn(#"Added Is Orphan Score", "State Score", each if [State] = "Suspended" then 2 else 0),
+    #"Added Encoded Name" = Table.AddColumn(#"Added State Score", "Encoded Name", each [App Name]),
+    #"Replaced Encoded Name" = Table.ReplaceValue(#"Added Encoded Name"," ","%20",Replacer.ReplaceText,{"Encoded Name"}),
+    #"Added TestName Check" = Table.AddColumn(
+        #"Replaced Encoded Name",
+        "NonProdNameCheck",
+        each 
+            let
+                nameCheck = #"NonProdNameCheck"([App Name]),
+                envName = [Environment Name],
+                appOwner = [App Owner],
+                envCheck = envName = "Personal Productivity" or envName = appOwner
+            in
+                if nameCheck=1 or envCheck then 1 else 0),
+    #"Added URLStarter" = Table.AddColumn(#"Added TestName Check", "URLStarter", each if #"Tenant Type" = "Commercial"
+then "https://make.powerapps.com"
+   else if #"Tenant Type" = "GCC"
+   then "https://make.gov.powerapps.us"
+      else if #"Tenant Type" = "GCC High"
+      then "https://make.high.powerapps.us"
+         else if #"Tenant Type" = "DoD"
+         then "https://make.apps.appsplatform.us"
+else "https://make.powerapps.com"),
+    #"Added DetailsLink" = Table.AddColumn(#"Added URLStarter", "DetailsLink", each if [App Type] = "Canvas" or [App Type] = "Custom Page" or [App Type] = "Component Library"
+then [URLStarter] & "/environments/" & [Environment ID] & "/apps/" & [App ID] & "/details"
+else if [App Type] = "Model Driven" then [URLStarter] & "/environments/" & [Environment ID] & "/insights/" & [admin_appidstring] & "/" 
+        & [admin_applogicalname] & "/pivot/Details/" & [Encoded Name] & "/Model/"
+else [URLStarter]),
+    #"Merged Queries" = Table.NestedJoin(#"Added DetailsLink", {"App Owner ID"}, #"Power Platform Users", {"User ID"}, "Power Platform Users", JoinKind.LeftOuter),
+    #"Expanded Power Platform Users" = Table.ExpandTableColumn(#"Merged Queries", "Power Platform Users", {"admin_userprincipalname"}, {"admin_userprincipalname"}),
+    #"Renamed Columns1" = Table.RenameColumns(#"Expanded Power Platform Users",{{"admin_userprincipalname", "User Principal Name"}})
+in
+    #"Renamed Columns1"
