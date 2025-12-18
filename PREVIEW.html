@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Power Platform CoE Site - Preview</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            background: #F3F2F1;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            height: 500px;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), 
+                        url('https://images.unsplash.com/photo-1551434678-e076c223a692?w=1920&h=600&fit=crop');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            padding: 40px 20px;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background-color: #0078D4;
+            color: white;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .hero-button:hover {
+            background-color: #106EBE;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .section-header h2 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 10px;
+        }
+
+        .section-header p {
+            font-size: 1.1rem;
+            color: #605E5C;
+        }
+
+        /* Service Cards */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-top: 4px solid #0078D4;
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .service-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            font-size: 1rem;
+            color: #605E5C;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .service-features {
+            margin-bottom: 20px;
+        }
+
+        .service-features h4 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 10px;
+        }
+
+        .service-features ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .service-features li {
+            padding: 8px 0;
+            color: #605E5C;
+            font-size: 0.9rem;
+        }
+
+        .service-button {
+            display: block;
+            text-align: center;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .service-button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Quick Links */
+        .quick-links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .quick-link-card {
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s ease;
+            border-left: 4px solid #0078D4;
+        }
+
+        .quick-link-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            background-color: #F3F2F1;
+        }
+
+        .quick-link-icon {
+            font-size: 2rem;
+        }
+
+        .quick-link-card h4 {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 5px;
+        }
+
+        .quick-link-card p {
+            font-size: 0.85rem;
+            color: #605E5C;
+        }
+
+        /* Resources */
+        .resources-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+        }
+
+        .resource-card {
+            background: white;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .resource-thumbnail {
+            height: 160px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .resource-type {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 1.2rem;
+        }
+
+        .resource-content {
+            padding: 20px;
+        }
+
+        .resource-content h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #323130;
+            margin-bottom: 10px;
+        }
+
+        .resource-date {
+            font-size: 0.85rem;
+            color: #605E5C;
+        }
+
+        /* Contact Section */
+        .contact-section {
+            margin: 60px 0;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #0078D4 0%, #5C2D91 100%);
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .contact-section h3 {
+            font-size: 2rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .contact-section p {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 30px;
+        }
+
+        .contact-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .contact-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: white;
+            color: #0078D4;
+            text-decoration: none;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .contact-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Footer */
+        .footer {
+            background: #323130;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                height: 400px;
+            }
+            .hero h1 {
+                font-size: 1.8rem;
+            }
+            .hero h2 {
+                font-size: 1.5rem;
+            }
+            .service-grid, .quick-links-grid, .resources-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Banner -->
+    <div class="hero">
+        <div class="hero-content">
+            <h1>Welcome, Team Member! 👋</h1>
+            <h2>Welcome to Power Platform Center of Excellence</h2>
+            <p>Empowering your organization with low-code solutions. Choose the model that fits your needs.</p>
+            <a href="#services" class="hero-button">Get Started</a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Service Models Section -->
+        <section class="section" id="services">
+            <div class="section-header">
+                <h2>Choose Your Service Model</h2>
+                <p>Select the support level that matches your project needs</p>
+            </div>
+            <div class="service-grid">
+                <!-- Advisory & Guidance -->
+                <div class="service-card">
+                    <div class="service-icon">💡</div>
+                    <h3>🤝 Advisory & Guidance</h3>
+                    <p>Need expert advice? Our team provides guidance and best practices for your Power Platform journey.</p>
+                    <div class="service-features">
+                        <h4>What's Included:</h4>
+                        <ul>
+                            <li>✓ Architecture review and recommendations</li>
+                            <li>✓ Best practices and governance guidance</li>
+                            <li>✓ Solution design consultation</li>
+                            <li>✓ Performance optimization tips</li>
+                            <li>✓ Security and compliance advice</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="service-button" style="background-color: #0078D4;">Request Advisory Support</a>
+                </div>
+
+                <!-- Production Support -->
+                <div class="service-card">
+                    <div class="service-icon">⚙️</div>
+                    <h3>🛠️ Production Support</h3>
+                    <p>Already have a solution? We provide production support, maintenance, and troubleshooting.</p>
+                    <div class="service-features">
+                        <h4>What's Included:</h4>
+                        <ul>
+                            <li>✓ Issue resolution and troubleshooting</li>
+                            <li>✓ Performance monitoring</li>
+                            <li>✓ Environment management</li>
+                            <li>✓ Premium connector support</li>
+                            <li>✓ License assistance</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="service-button" style="background-color: #107C10;">Request Production Support</a>
+                </div>
+
+                <!-- Full Development -->
+                <div class="service-card">
+                    <div class="service-icon">💻</div>
+                    <h3>🚀 Full Development</h3>
+                    <p>Start from scratch! We'll build your solution end-to-end with full development support.</p>
+                    <div class="service-features">
+                        <h4>What's Included:</h4>
+                        <ul>
+                            <li>✓ Complete solution development</li>
+                            <li>✓ Requirements gathering and analysis</li>
+                            <li>✓ Premium license provisioning</li>
+                            <li>✓ Testing and deployment</li>
+                            <li>✓ Training and handover</li>
+                            <li>✓ Ongoing support packages</li>
+                        </ul>
+                    </div>
+                    <a href="#" class="service-button" style="background-color: #5C2D91;">Request Full Development</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Links Section -->
+        <section class="section">
+            <div class="section-header">
+                <h2>Quick Links</h2>
+                <p>Frequently accessed resources and tools</p>
+            </div>
+            <div class="quick-links-grid">
+                <a href="#" class="quick-link-card">
+                    <div class="quick-link-icon">🏁</div>
+                    <div>
+                        <h4>How to Get Started</h4>
+                        <p>New to Power Platform? Start here!</p>
+                    </div>
+                </a>
+                <a href="#" class="quick-link-card">
+                    <div class="quick-link-icon">📦</div>
+                    <div>
+                        <h4>Onboarding Package</h4>
+                        <p>Complete onboarding resources</p>
+                    </div>
+                </a>
+                <a href="#" class="quick-link-card">
+                    <div class="quick-link-icon">🎫</div>
+                    <div>
+                        <h4>Request Premium License</h4>
+                        <p>Need premium connectors?</p>
+                    </div>
+                </a>
+                <a href="#" class="quick-link-card">
+                    <div class="quick-link-icon">✅</div>
+                    <div>
+                        <h4>Solution Readiness Checklist</h4>
+                        <p>Prepare for go-live</p>
+                    </div>
+                </a>
+                <a href="#" class="quick-link-card">
+                    <div class="quick-link-icon">🌐</div>
+                    <div>
+                        <h4>Business Enabler Environments</h4>
+                        <p>Access development environments</p>
+                    </div>
+                </a>
+                <a href="#" class="quick-link-card">
+                    <div class="quick-link-icon">👥</div>
+                    <div>
+                        <h4>Community of Practice</h4>
+                        <p>Join our community</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Resources Section -->
+        <section class="section">
+            <div class="section-header">
+                <h2>Resources & Learning</h2>
+                <p>Documentation, guides, and training materials</p>
+            </div>
+            <div class="resources-grid">
+                <a href="#" class="resource-card">
+                    <div class="resource-thumbnail" style="background-image: linear-gradient(135deg, #0078D4, #00BCF2);">
+                        <span class="resource-type">📄</span>
+                    </div>
+                    <div class="resource-content">
+                        <h4>Introduction to Power Platform</h4>
+                        <p class="resource-date">Updated: Nov 25, 2025</p>
+                    </div>
+                </a>
+                <a href="#" class="resource-card">
+                    <div class="resource-thumbnail" style="background-image: linear-gradient(135deg, #742774, #A04EA0);">
+                        <span class="resource-type">📄</span>
+                    </div>
+                    <div class="resource-content">
+                        <h4>Power Apps Best Practices</h4>
+                        <p class="resource-date">Updated: Dec 1, 2025</p>
+                    </div>
+                </a>
+                <a href="#" class="resource-card">
+                    <div class="resource-thumbnail" style="background-image: linear-gradient(135deg, #107C10, #0B6A0B);">
+                        <span class="resource-type">🎥</span>
+                    </div>
+                    <div class="resource-content">
+                        <h4>Getting Started Video Series</h4>
+                        <p class="resource-date">Updated: Nov 12, 2025</p>
+                    </div>
+                </a>
+                <a href="#" class="resource-card">
+                    <div class="resource-thumbnail" style="background-image: linear-gradient(135deg, #D83B01, #EA4300);">
+                        <span class="resource-type">📄</span>
+                    </div>
+                    <div class="resource-content">
+                        <h4>Governance Guidelines</h4>
+                        <p class="resource-date">Updated: Oct 15, 2025</p>
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="contact-section">
+            <h3>Need Help?</h3>
+            <p>Our team is here to support you!</p>
+            <div class="contact-buttons">
+                <a href="mailto:powerplatform.coe@yourcompany.com" class="contact-button">📧 Email Us</a>
+                <a href="#" class="contact-button">💬 Teams Channel</a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>Power Platform Center of Excellence | Empowering Innovation Through Low-Code</p>
+    </footer>
+</body>
+</html>

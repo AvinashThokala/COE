@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/core-build/serve.schema.json",
+  "port": 4321,
+  "https": true,
+  "serveConfigurations": {
+    "default": {
+      "pageUrl": "https://enbridge.sharepoint.com/teams/PowerAppsCOE/SitePages/Home.aspx"
+    },
+    "powerPlatformCoe": {
+      "pageUrl": "https://enbridge.sharepoint.com/teams/PowerAppsCOE/SitePages/Home.aspx"
+    }
+  }
+}
