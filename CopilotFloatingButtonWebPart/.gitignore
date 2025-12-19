@@ -1,0 +1,8 @@
+node_modules
+lib
+dist
+temp
+*.log
+.vscode
+sharepoint/solution/*.sppkg
+.DS_Store

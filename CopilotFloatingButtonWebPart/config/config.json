@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "copilot-button-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/CopilotButtonWebPart.js",
+          "manifest": "./src/webparts/copilotButton/CopilotButtonWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "CopilotButtonWebPartStrings": "lib/webparts/copilotButton/loc/{locale}.js"
+  }
+}

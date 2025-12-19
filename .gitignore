@@ -1,0 +1,40 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+lib/
+release/
+temp/
+*.sppkg
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# OS
+.DS_Store
+Thumbs.db
+
+# SharePoint
+.awcache
+package-lock.json
+yarn.lock
+
+# TypeScript
+*.tsbuildinfo
+
+# Misc
+*.swp
+*~
+.project
+.settings/
